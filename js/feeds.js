@@ -216,6 +216,17 @@ var feeds_bbc_sm = [
     "http://feeds.bbci.co.uk/news/rss.xml",
 ]
 
+var feeds_nymag = [
+    "http://feeds.feedburner.com/nymag/intelligencer",
+    "http://feeds.feedburner.com/nymag/vulture",
+    "http://feeds.feedburner.com/nymag/fashion",
+    "http://feeds.feedburner.com/nymag/grubstreet",
+    "https://www.curbed.com/feeds/full-content.rss",
+]
+var feeds_nymag_sm = [
+    "http://feeds.feedburner.com/nymag/intelligencer"
+]    
+
 var feeds_politico = [
     "http://rss.politico.com/congress.xml",
     "http://rss.politico.com/healthcare.xml",
@@ -702,6 +713,7 @@ var default_feeds = feeds_long_list
 .concat(feeds_ft_sm)
 .concat(feeds_guardian_sm)
 .concat(feeds_bbc_sm)
+.concat(feeds_nymag_sm)
 .concat(feeds_politico_sm)
 .concat(feeds_slate_sm)
 .concat(feeds_rollingstone_sm)
@@ -729,6 +741,7 @@ var feeds_long_list = feeds_long_list
 .concat(feeds_ft)
 .concat(feeds_guardian)
 .concat(feeds_bbc)
+.concat(feeds_nymag)
 .concat(feeds_politico)
 .concat(feeds_slate)
 .concat(feeds_rollingstone)
