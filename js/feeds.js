@@ -438,6 +438,9 @@ var feeds_blogs = [
     // Librarian of Things
     "https://librarian.aedileworks.com/feed/",
 
+    // Jordan Furlong
+    "https://jordanfurlong.substack.com/feed",
+
 
     // Platformer
     "https://www.platformer.news/rss/",
