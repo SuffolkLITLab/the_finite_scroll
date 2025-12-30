@@ -1,4 +1,4 @@
-var version = "v1.4.1";
+var version = "v1.5.0";
 
 var gist_file_name = "the_finite_scroll";
 if (window.location.host=="myrssalgo.org") {
@@ -347,6 +347,7 @@ control.addEventListener("change", function(event){
 
 var xml_doc;
 var dfreq_last;
+var captcha_blocks = [];
 
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -541,7 +542,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // https://github.com/distribuyed/proxies?tab=readme-ov-file
         var proxy_00 = "https://workers-playground-dawn-hill-de20.dcolarusso.workers.dev/?url=";
-        var proxy_01 = "https://corsproxy.io/?";
+        var proxy_01 = "https://corsproxy.io/?url=";
         //var proxy_01 = "https://api.allorigins.win/raw?url=";
         //var proxy_01 = "https://cors-anywhere.com/";
         //var proxy_01 = "https://tools.suffolklitlab.org/rss_proxy/?url=";
@@ -563,22 +564,33 @@ document.addEventListener("DOMContentLoaded", function() {
 
         async function tryFetchWithProxies() {
             let response = await fetchRSS(feedUrl_prox);
+            //data_check = await response.text().match("sgcaptcha")
             if (!response) {
                 console.log("Trying first proxy for " + feedUrl);
                 feedUrl_prox = proxy_01 + encodeURIComponent(feedUrl);
                 response2 = await fetchRSS(feedUrl_prox);
+                captch_test = await response2.text();
+                if (captch_test.match("sgcaptcha")) {
+                    console.log(`${feedUrl} hit a captcha`);
+                    captcha_blocks.push(feedUrl);
+                    response2 = null;
+                }
                 if (!response2) {
                     console.log("Trying second proxy for " + feedUrl);
                     feedUrl_prox = proxy_02 + feedUrl; //no encoding for this service
                     response3 = await fetchRSS(feedUrl_prox);
                     if (!response3) {
-                        console.log("Error fetching with both proxies.");
+                        console.log("Error fetching with all three proxies.");
                     } else {
                         response = response3
                     }
                 } else {
                     response = response2
                 }
+            }
+            if ((n_feeds+1)>=rssFeeds.length) {
+                document.getElementById('loading').style.display = "none";
+                document.getElementById('loading').innerHTML = "<i>&nbsp;Loading . . .&nbsp;</i>";
             }
             return response;
         }
@@ -1442,7 +1454,12 @@ document.addEventListener("DOMContentLoaded", function() {
                         errors+=1
                         n_feeds+=1
                         stored_name = JSON.parse(localStorage.getItem("feed_names"))[feedUrl]
-                        feed_error_list += `<li><b>${stored_name}</b> - <a href="${feedUrl}" target="_blank">${feedUrl}</a> (<a href='./?regex=${encodeURI(feedUrl.replaceAll("?","\\?").replaceAll("+","\\+").replaceAll(".","\\."))}'>search ${count_cards(feedUrl)} cards</a> | <a href='javascript:remove_feed ("${stored_name}","${feedUrl}")'>remove</a>)</li>`;
+                        if (captcha_blocks.includes(feedUrl)) {
+                            bot_block = "**"
+                        } else {
+                            bot_block = ""
+                        }
+                        feed_error_list += `<li><b>${stored_name}</b> - <a href="${feedUrl}" target="_blank">${feedUrl}</a>${bot_block} (<a href='./?regex=${encodeURI(feedUrl.replaceAll("?","\\?").replaceAll("+","\\+").replaceAll(".","\\."))}'>search ${count_cards(feedUrl)} cards</a> | <a href='javascript:remove_feed ("${stored_name}","${feedUrl}")'>remove</a>)</li>`;
                         localStorage.setItem("feed_error_list",feed_error_list)
                     });
             });
