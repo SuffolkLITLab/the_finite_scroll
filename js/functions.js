@@ -1459,7 +1459,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         } else {
                             bot_block = ""
                         }
-                        feed_error_list += `<li><b>${stored_name}</b> - <a href="${feedUrl}" target="_blank">${feedUrl}</a>${bot_block} (<a href='./?regex=${encodeURI(feedUrl.replaceAll("?","\\?").replaceAll("+","\\+").replaceAll(".","\\."))}'>search ${count_cards(feedUrl)} cards</a> | <a href='javascript:remove_feed ("${stored_name}","${feedUrl}")'>remove</a>)</li>`;
+                        feed_error_list += `<li><b>${bot_block}${stored_name}</b> - <a href="${feedUrl}" target="_blank">${feedUrl}</a> (<a href='./?regex=${encodeURI(feedUrl.replaceAll("?","\\?").replaceAll("+","\\+").replaceAll(".","\\."))}'>search ${count_cards(feedUrl)} cards</a> | <a href='javascript:remove_feed ("${stored_name}","${feedUrl}")'>remove</a>)</li>`;
                         localStorage.setItem("feed_error_list",feed_error_list)
                     });
             });
