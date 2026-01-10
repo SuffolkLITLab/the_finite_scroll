@@ -604,7 +604,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let response = null;
         let data = null;
 
-        if (feedUrl.includes("http://localhost")) {
+        if (feedUrl.startsWith("http://localhost")) {
             response = await fetchRSS(feedUrl);
         } else {
             response = await tryFetchWithProxies();
