@@ -1,4 +1,4 @@
-var version = "v1.5.0";
+var version = "v1.6.0";
 
 var gist_file_name = "the_finite_scroll";
 if (window.location.host=="myrssalgo.org") {
@@ -547,7 +547,7 @@ document.addEventListener("DOMContentLoaded", function() {
         //var proxy_01 = "https://cors-anywhere.com/";
         //var proxy_01 = "https://tools.suffolklitlab.org/rss_proxy/?url=";
         var proxy_02 = "https://api.cors.lol/?url=";
-        var feedUrl_prox = proxy_00 + encodeURIComponent(feedUrl);
+        var feedUrl_prox = proxy_00 + encodeURIComponent(feedUrl);            
 
         async function fetchRSS(url) {
             try {
@@ -601,8 +601,20 @@ document.addEventListener("DOMContentLoaded", function() {
         //    }
         //});
 
-        var response = await tryFetchWithProxies(feedUrl_prox);   
-        const data = await response.text();
+        let response = null;
+        let data = null;
+
+        if (feedUrl.includes("http://localhost")) {
+            response = await fetchRSS(feedUrl);
+        } else {
+            response = await tryFetchWithProxies();
+        }
+
+        if (response) {
+            data = await response.text();
+        } else {
+            data = null;
+        }
 
         n_feeds += 1;
         if (n_feeds>=rssFeeds.length) {
