@@ -92,6 +92,8 @@ function get_cached_logo(link,mediaThumbnail,source_feed="") {
          mediaThumbnail =  "images/cached_logos/cloudcroftreader.png";
     } else if (source_feed.includes("aedileworks.com")) {
          mediaThumbnail =  "images/cached_logos/aedileworks.png";
+    } else if (source_feed.includes("verysane.ai")) {
+         mediaThumbnail =  "images/cached_logos/verysane.png";
     }
    
     return mediaThumbnail

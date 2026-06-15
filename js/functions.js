@@ -1,4 +1,4 @@
-var version = "v1.6.0";
+var version = "v1.7.0";
 
 var gist_file_name = "the_finite_scroll";
 if (window.location.host=="myrssalgo.org") {
@@ -40,6 +40,17 @@ function notdirty() {
     isDirty = false
     localStorage.setItem("isDirty",false)
 }
+
+function ensureMuteExcludeSettings() {
+    if (localStorage.getItem("regex_never_exclude") === null) {
+        localStorage.setItem("regex_never_exclude", "");
+    }
+    if (localStorage.getItem("regex_never_exclude_op") === null) {
+        localStorage.setItem("regex_never_exclude_op", "i");
+    }
+}
+
+ensureMuteExcludeSettings();
 
 document.addEventListener('DOMContentLoaded', () => {
   const body = document.body;
@@ -159,6 +170,23 @@ document.getElementById("regex_never").value = regex_never;
 
 const regex_never_op =  localStorage.getItem("regex_never_op") || "";
 document.getElementById("regex_never_op").value = regex_never_op;
+
+const regex_never_exclude =  localStorage.getItem("regex_never_exclude") || "";
+document.getElementById("regex_never_exclude").value = regex_never_exclude;
+
+const regex_never_exclude_op =  localStorage.getItem("regex_never_exclude_op") || "i";
+document.getElementById("regex_never_exclude_op").value = regex_never_exclude_op;
+
+// Explicitly persist the new Exclude from Mute fields and mark local data dirty.
+// This makes the fields survive reloads, Save All exports, and cloud gist sync.
+document.getElementById("regex_never_exclude").addEventListener("input", function () {
+    localStorage.setItem("regex_never_exclude", this.value);
+    dirty();
+});
+document.getElementById("regex_never_exclude_op").addEventListener("input", function () {
+    localStorage.setItem("regex_never_exclude_op", this.value);
+    dirty();
+});
 
 const regex_flag =  localStorage.getItem("regex_flag") || "";
 document.getElementById("regex_flag").value = regex_flag;
@@ -326,6 +354,7 @@ control.addEventListener("change", function(event){
                             //localStorage.clear();
                             localStorage.setItem(key,value);                            
                         }
+                        ensureMuteExcludeSettings();
                         notdirty();
                         //localStorage.setItem("lastLoad",0);
                         window.location.reload(true);
@@ -1614,8 +1643,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 regex = new RegExp(regex_never, regex_never_op); 
                 test_string = feedTitle.replace(/[^a-zA-Z]+/g,"-")+" "+title+" "+description+""+link
                 if (test_string.match(regex)) {
-                    //console.log("Muting match for /"+regex_never+"/"+regex_never_op)
                     match = 1
+
+                    if (regex_never_exclude!="") {
+                        exclude_regex = new RegExp(regex_never_exclude, regex_never_exclude_op);
+                        if (test_string.match(exclude_regex)) {
+                            //console.log("Mute excluded by /"+regex_never_exclude+"/"+regex_never_exclude_op)
+                            match = 0
+                        }
+                    }
                 } else {
                     match = 0
                 }
@@ -2712,12 +2748,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const matching_regex = document.getElementById("matching_regex");
 
-    function regex_search(newSearch,and_this=null) {
+    function regex_search(newSearch,and_this=null,newSearchOp="i",andThisOp="i") {
 
         if (and_this){
-            window.history.replaceState({}, "", document.location.href.split("?")[0]+"?regex="+ encodeURIComponent(newSearch)+"&regex2="+ encodeURIComponent(and_this));           
+            window.history.replaceState({}, "", document.location.href.split("?")[0]+"?regex="+ encodeURIComponent(newSearch)+"&regex_op="+ encodeURIComponent(newSearchOp)+"&regex2="+ encodeURIComponent(and_this)+"&regex2_op="+ encodeURIComponent(andThisOp));           
         } else {
-            window.history.replaceState({}, "", document.location.href.split("?")[0]+"?regex="+ encodeURIComponent(newSearch));   
+            window.history.replaceState({}, "", document.location.href.split("?")[0]+"?regex="+ encodeURIComponent(newSearch)+"&regex_op="+ encodeURIComponent(newSearchOp));   
         }
         
         document.getElementById('unread-count').style.display = "none";
@@ -2734,18 +2770,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
         saved_articles =  JSON.parse(localStorage.getItem("articles")) || [];
 
-        regex = new RegExp(newSearch, "i")
-
-        regex_html = `<a href="https://www.codingthelaw.org/Fall_2020/level/5/#intro_vid" target="_blank">Regular expression</a> matching results for <span class='code_highlight'>${newSearch}</span>&nbsp;`
-        
-        if (and_this){
-            regex_html += `and <span class='code_highlight'>${and_this}</span>&nbsp;`;
+        regex = new RegExp(newSearch, newSearchOp || "i")
+        regex2 = null
+        if (and_this) {
+            regex2 = new RegExp(and_this, andThisOp || "i")
         }
 
-        regex_html += `(<a href="${document.location.href.split("?")[0]+"?regex="+encodeURIComponent(newSearch)}`
+        regex_html = `<a href="https://www.codingthelaw.org/Fall_2020/level/5/#intro_vid" target="_blank">Regular expression</a> matching results for <span class='code_highlight'>/${newSearch}/${newSearchOp}</span>&nbsp;`
         
         if (and_this){
-            regex_html += `&regex2=${encodeURIComponent(and_this)}`
+            regex_html += `and <span class='code_highlight'>/${and_this}/${andThisOp}</span>&nbsp;`;
+        }
+
+        regex_html += `(<a href="${document.location.href.split("?")[0]+"?regex="+encodeURIComponent(newSearch)+"&regex_op="+encodeURIComponent(newSearchOp)}`
+        
+        if (and_this){
+            regex_html += `&regex2=${encodeURIComponent(and_this)}&regex2_op=${encodeURIComponent(andThisOp)}`
         }
 
         regex_html += `" target="_blank">link to search</a>).`;
@@ -2805,9 +2845,9 @@ document.addEventListener("DOMContentLoaded", function() {
             testString = articleData.title + " " + articleData.description + " " + articleData.link  + " " + articleData.feedTitle + " " + articleData.feedUrl + " upvote_is_" + article_upvote  + " downvote_is_" +  article_downvote + "flag1_is_" + has_flag1 + " flag2_is_" + has_flag2  + " read_is_" + article_is_read + " untouched_is_" + untouched
 
             //console.log(" upvote_is_" + articleData.hasUpvote)
-            if (and_this && testString.match(regex) && testString.match(and_this)) {
+            if (regex2 && testString.match(regex) && testString.match(regex2)) {
                 searchResults.push(articleData);
-            } else if (!and_this && testString.match(regex)) {
+            } else if (!regex2 && testString.match(regex)) {
                 //console.log(articleData)
                 searchResults.push(articleData);
             }
@@ -2859,17 +2899,32 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const runSearchAlways = document.getElementById("search_always");
     runSearchAlways.addEventListener("click", function() {
-        regex_search(document.getElementById('regex_always').value);
+        regex_search(document.getElementById('regex_always').value, null, document.getElementById('regex_always_op').value || "i");
     });
 
     const runSearchNever = document.getElementById("search_never");
     runSearchNever.addEventListener("click", function() {
-        regex_search(document.getElementById('regex_never').value);
+        regex_search(document.getElementById('regex_never').value, null, document.getElementById('regex_never_op').value || "i");
+    });
+
+    const runSearchNeverExclude = document.getElementById("search_never_exclude");
+    runSearchNeverExclude.addEventListener("click", function() {
+        regex_search(
+            document.getElementById('regex_never').value,
+            document.getElementById('regex_never_exclude').value,
+            document.getElementById('regex_never_op').value || "i",
+            document.getElementById('regex_never_exclude_op').value || "i"
+        );
     });
 
     const runSearchOverlap = document.getElementById("mute_bump_overlap");
     runSearchOverlap.addEventListener("click", function() {
-        regex_search(document.getElementById('regex_always').value,document.getElementById('regex_never').value);
+        regex_search(
+            document.getElementById('regex_always').value,
+            document.getElementById('regex_never').value,
+            document.getElementById('regex_always_op').value || "i",
+            document.getElementById('regex_never_op').value || "i"
+        );
     });
 
     async function openai_call(prompt_text) {
@@ -3022,6 +3077,7 @@ async function run_llm() {
                                 If an option below inludes a parenthetical, that means it comes with a pre-trained algo focusing on the named theme. Your interactions will refine its operation, and FWIW, it includes the same feeds as others with the same name. It's just the intial focus that's different.
                             </p>
                             <select id="feed_list" onLoad="feed_list_update">
+                                <option value="suffolk_lit_feeds">Suffolk LIT Lab Legal Tech Mix</option>
                                 <option value="default_feeds">Generic US Mix</option>
                                 <option value="default_feeds_legal_tech">Generic US Mix (legal tech &amp; AI)</option>
                                 <option value="default_feeds_science">Generic US Mix (math, science, &amp; space)</option>
@@ -3036,7 +3092,6 @@ async function run_llm() {
                                 <option value="condenast_feeds">Condé Nast Lite: New Yorker, Vanity Fair, ArsTechnica, &amp; Wired</option>
                                 <option value="geeek_feeds">Geekery: Science, Space, Tech, &amp; SciFi Shorts</option>
                                 <option value="scifi_shorts_feed">SciFi Shorts: Clarkesworld, Lightspeed &amp; Escape Pod</option>
-                                <option value="suffolk_law_feeds">Suffolk Law Mix: Select Papers + Boston + Law</option>
                                 <option value="dc_law_feeds">Digital Commons Orgs w/ Law Content (400+ orgs)</option>
                                 <option value="law_school_feeds">Digital Commons Orgs w/ ABA-Accredited Law Schools (100+ feeds)</option>
                                 <option value="feeds_long_list">Fire Hose: All of the Above, Plus Some</option>-->
@@ -3309,9 +3364,14 @@ async function run_llm() {
             if (searchParams.has('regex')){
                 document.getElementById('loading').style.display = "none";
                 if (searchParams.has('regex2')) {
-                    regex_search(searchParams.get('regex'),searchParams.get('regex2'))
+                    regex_search(
+                        searchParams.get('regex'),
+                        searchParams.get('regex2'),
+                        searchParams.get('regex_op') || "i",
+                        searchParams.get('regex2_op') || "i"
+                    )
                 } else {
-                    regex_search(searchParams.get('regex'))
+                    regex_search(searchParams.get('regex'), null, searchParams.get('regex_op') || "i")
                 }
                 document.getElementById('upwords').innerHTML = topWords(upTFIDF,downTFIDF);
                 document.getElementById('downwords').innerHTML = topWords(downTFIDF,upTFIDF);  
@@ -3653,6 +3713,7 @@ ${bodyXml}</body>
       backstop: new Date(0),
       regex_always_op: "i",
       regex_never_op: "i",
+      regex_never_exclude_op: "i",
       regex_flag_op: "i",
       regex_flag_2_op: "i",
       cardcutoff: "30",
@@ -3662,7 +3723,9 @@ ${bodyXml}</body>
       downTFIDF: "{}",           
       feeds: JSON.stringify(feeds, null, 0),
       voteViewMode: "true",
-      regex_always: "",          
+      regex_always: "",
+      regex_never: "",
+      regex_never_exclude: "",          
       //afterOpenMode: "true",
       lastcooldown: "0.5",
       articles: "[]",            
@@ -3842,6 +3905,10 @@ async function load_gists_data() {
                     data_dump = RssOpmlIO.opmlToJson(gist_text)
                 }               
                 if (data_dump["feeds"]!="[]"){
+                    // Preserve local values for settings that may be absent from older cloud files.
+                    const local_regex_never_exclude = localStorage.getItem("regex_never_exclude");
+                    const local_regex_never_exclude_op = localStorage.getItem("regex_never_exclude_op");
+
                     localStorage.clear();
                     for (const [key, value] of Object.entries(data_dump)) {
                         //console.log(key,JSON.stringify(value))
@@ -3849,6 +3916,15 @@ async function load_gists_data() {
                         localStorage.setItem(key,value);
                         
                     }
+
+                    if (!Object.prototype.hasOwnProperty.call(data_dump, "regex_never_exclude")) {
+                        localStorage.setItem("regex_never_exclude", local_regex_never_exclude || "");
+                    }
+                    if (!Object.prototype.hasOwnProperty.call(data_dump, "regex_never_exclude_op")) {
+                        localStorage.setItem("regex_never_exclude_op", local_regex_never_exclude_op || "i");
+                    }
+                    ensureMuteExcludeSettings();
+
                     //localStorage.setItem("lastLoad",0);
                     //window.location.reload(true);
                 } else {
@@ -3919,6 +3995,7 @@ async function pull_gists_data() {
                         //localStorage.clear();
                         localStorage.setItem(key,value);
                     }
+                    ensureMuteExcludeSettings();
                     notdirty();
                     //localStorage.setItem("lastLoad",0);
                     window.location.reload(true);
