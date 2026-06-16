@@ -1,4 +1,4 @@
-var version = "v1.7.0";
+var version = "v1.8.0";
 
 var gist_file_name = "the_finite_scroll";
 if (window.location.host=="myrssalgo.org") {
@@ -213,7 +213,7 @@ document.getElementById("api_base").value = api_base;
 const api_key =  localStorage.getItem("api_key") || "";
 document.getElementById("api_key").value = api_key;
 
-const prompt_pref =  localStorage.getItem("prompt_pref") || `Now provide your briefing. Keep it short, no more than 100 words! Also, wrap all proper nouns in <a> tags with hrefs pointing to \`./?regex=PROPER NOUN\` (e.g., "George <a href='./?regex=\bWashington\b'>Washington</a>"). Be sure these nouns appear in the text provided above in the same form (e.g., U.S. vs US), and wrap the smallest meaningful part of multi-word nouns in the anchor tag (e.g., link to one's surname, not their full name). Also make sure that the regex parameter in the link matches the anchor text exactly except it should be straddled by non-word breaks (i.e., \`\b\`). Remember, you should only craft links for proper nouns (i.e., names of individual persons, places, or things starting with a capital letter). Don't link to common nouns.`;
+const prompt_pref =  localStorage.getItem("prompt_pref") || "Read the following list of headlines and introductory sentences then provide a short briefing based on what you read in the style of a news breif. If a story shows up multiple times, place it closer to the top of your summary. Remember, there may not be room for everything, prioritize. \n-----\n{{news-feed}}\n-----\nNow provide your briefing. Keep it short, no more than 100 words! Also, wrap all proper nouns in <a> tags with hrefs pointing to `./?regex=PROPER NOUN` (e.g., \"George <a href='./?regex=\\bWashington\\b'>Washington</a>\"). Be sure these nouns appear in the text provided above in the same form (e.g., U.S. vs US), and wrap the smallest meaningful part of multi-word nouns in the anchor tag (e.g., link to one's surname, not their full name). For people's names, use the full name in the text, it's just the link should be on the surname, not the full name. Also make sure that the regex parameter in the link matches the anchor text exactly except it should be straddled by non-word breaks (i.e., `\\b`). Remember, you should only craft links for proper nouns (i.e., names of individual persons, places, or things starting with a capital letter). Don't link to common nouns.";
 document.getElementById("prompt_pref").value = prompt_pref;
 
 if (api_base.length>0 && api_key.length>0 && prompt_pref.length>0) {
@@ -478,7 +478,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (load_default_feed==1){
-        var feed_name = "default_feeds"
+        var feed_name = "default_feeds_legal_tech"
         rssFeeds = JSON.parse(localStorage.getItem("feeds")) || feed_lib[feed_name];
     }
 
@@ -996,7 +996,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (localStorage.getItem("voteViewMode")) {
         voteViewModeState = localStorage.getItem("voteViewMode") === "true";
     } else {
-        voteViewModeState = true;
+        voteViewModeState = false;
         localStorage.setItem("voteViewMode", voteViewModeState);
     }
     voteViewCheckbox.checked = voteViewModeState;
@@ -3076,8 +3076,10 @@ async function run_llm() {
                             <p>
                                 If an option below inludes a parenthetical, that means it comes with a pre-trained algo focusing on the named theme. Your interactions will refine its operation, and FWIW, it includes the same feeds as others with the same name. It's just the intial focus that's different.
                             </p>
+                            <p>
+                                You can also bump content to the top of your feed or mute it in <i>Settings</i>. By default, <i>ICYMI Law's AI Feed</i> is bumped to the top.
+                            </p>
                             <select id="feed_list" onLoad="feed_list_update">
-                                <option value="suffolk_lit_feeds">Suffolk LIT Lab Legal Tech Mix</option>
                                 <option value="default_feeds">Generic US Mix</option>
                                 <option value="default_feeds_legal_tech">Generic US Mix (legal tech &amp; AI)</option>
                                 <option value="default_feeds_science">Generic US Mix (math, science, &amp; space)</option>
@@ -3717,7 +3719,7 @@ ${bodyXml}</body>
       regex_flag_op: "i",
       regex_flag_2_op: "i",
       cardcutoff: "30",
-      votelib: "default_feeds",
+      votelib: "default_feeds_legal_tech",
       lastLoad: 0,
       upTFIDF: "{}",
       downTFIDF: "{}",           

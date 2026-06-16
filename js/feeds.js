@@ -373,8 +373,8 @@ var feeds_lawfare_sm = [
 var feeds_lexblog = [
     // LexBlog
     //"https://www.lexblog.com/feed/",
-        "https://www.lexblog.com/access-to-justice/feed/",
-        "https://www.lexblog.com/technology/feed/",
+    //    "https://www.lexblog.com/access-to-justice/feed/",
+    //    "https://www.lexblog.com/technology/feed/",
             "https://www.lexblog.com/author/dmk/feed/",
             "https://www.denniskennedy.com/feed/",
             "https://www.lexblog.com/author/greglambert/feed/",
@@ -385,9 +385,9 @@ var feeds_lexblog = [
             "https://www.techlawcrossroads.com/feed/",
             "https://www.cyberadviserblog.com/feed/",
         "https://www.lexblog.com/ethics-professional-responsibility/feed/",
-        "https://www.lexblog.com/law-library/feed/",
-        "https://www.lexblog.com/government/feed/",
-        "https://www.lexblog.com/law-school-blogs/feed/",
+     //   "https://www.lexblog.com/law-library/feed/",
+     //   "https://www.lexblog.com/government/feed/",
+     //   "https://www.lexblog.com/law-school-blogs/feed/",
 ]
 var feeds_lexblog_sm = [
     // LexBlog
@@ -441,16 +441,19 @@ var feeds_blogs = [
     "https://www.alt-counsel.com/rss/",
     
     // NonProfit Techy
-    "https://www.nonprofittechy.com/feed/",
+    //"https://www.nonprofittechy.com/feed/",
 
     // Sarah Glassmeyer
-    "https://sarahglassmeyer.com/?feed=rss2",
+    //"https://sarahglassmeyer.com/?feed=rss2",
         
     // Librarian of Things
     "https://librarian.aedileworks.com/feed/",
 
     // Jordan Furlong
     "https://jordanfurlong.substack.com/feed",
+
+    // Vaill's the AI of Law
+    "https://vaill.substack.com/feed",
 
 
     // Platformer
@@ -463,7 +466,7 @@ var feeds_blogs = [
     "https://www.oneusefulthing.org/feed",    
 
     // Tim Harford
-    "https://timharford.com/feed",
+    //"https://timharford.com/feed",
 
 
     // Bad Astornomy 
@@ -641,13 +644,13 @@ var feeds_long_list = [
     "https://techcrunch.com/feed/",
 
     // The Information
-    "https://www.theinformation.com/feed",
+    //"https://www.theinformation.com/feed",
     
     // The Verge
     "https://www.theverge.com/rss/index.xml",
 
     // Gizmodo
-    "https://gizmodo.com/feed",
+    //"https://gizmodo.com/feed",
 
     // Lifehacker
     "https://lifehacker.com/feed/rss",
@@ -685,7 +688,7 @@ var feeds_long_list = [
     "https://www.eff.org/rss/updates.xml",
 
     // Suffolk LIT Lab
-    "https://suffolklitlab.org/feed/",
+    //"https://suffolklitlab.org/feed/",
 
 
     // Sadly Not Havoc Dinosaur
@@ -702,11 +705,12 @@ var feeds_long_list = [
 ]
 
 var suffolk_lit_feeds = [
-    "https://icymilaw.org/rss/ailaw.xml",
-    "https://icymilaw.org/rss/papers.xml"
+    "https://icymilaw.org/rss/law-tech-news-feed.xml",
+    "https://icymilaw.org/rss/ailaw.xml"
 ]
 
 var default_feeds = feeds_long_list
+.concat(suffolk_lit_feeds)
 .concat(feeds_nyt_sm)
 .concat(feeds_wapo_sm)
 .concat(feeds_wsj_sm)
@@ -726,7 +730,7 @@ var default_feeds = feeds_long_list
 .concat(feeds_theconversation_sm)
 .concat(feeds_phys_sm)
 .concat(feeds_wired_sm)
-.concat(feeds_aeon_sm)
+//.concat(feeds_aeon_sm)
 .concat(feeds_lawfare_sm)
 .concat(feeds_lexblog_sm)
 //.concat(feeds_arxiv_sm)
@@ -735,6 +739,7 @@ var default_feeds = feeds_long_list
 ;
 
 var feeds_long_list = feeds_long_list
+.concat(suffolk_lit_feeds)
 .concat(feeds_nyt)
 .concat(feeds_wapo)
 .concat(feeds_wsj)
@@ -754,7 +759,7 @@ var feeds_long_list = feeds_long_list
 .concat(feeds_theconversation)
 .concat(feeds_phys)
 .concat(feeds_wired)
-.concat(feeds_aeon)
+//.concat(feeds_aeon)
 .concat(feeds_lawfare)
 .concat(feeds_lexblog)
 
@@ -766,7 +771,7 @@ var feeds_long_list = feeds_long_list
 .concat(feeds_math_sci)
 .concat(feeds_scifi)
 .concat(feeds_patch)
-.concat(feeds_arlington)
+//.concat(feeds_arlington)
 .concat(feeds_malawyers)
 .concat(feeds_comonealthbeacon)
 .concat(feeds_boston)
@@ -830,7 +835,7 @@ default_dfreq = {
 }
 
 if (!localStorage.getItem("votelib")) {
-    localStorage.setItem("votelib","default_feeds");
+    localStorage.setItem("votelib","default_feeds_legal_tech");
 }
 
 if (!localStorage.getItem("cooldown")) {
@@ -846,12 +851,12 @@ if (!localStorage.getItem("cardcutoff")) {
 }
 
 if (!localStorage.getItem("backstop")) {
-    localStorage.setItem("regex_always", "suffolklitlab\\.org");
+    localStorage.setItem("regex_always", "icymilaw\\.org\\/rss\\/ailaw\\.xml");
     localStorage.setItem("regex_always_op", "i");
 }
 
 if (!localStorage.getItem("backstop")) {
-    localStorage.setItem("regex_never", "Deal of the Day:|Daily Deal:|on Sale|\\% Off|\\$\\d+ Off");
+    localStorage.setItem("regex_never", "\\bTrump\\b|Deal of the Day:|Daily Deal:|on Sale|\\% Off|\\$\\d+ Off");
     localStorage.setItem("regex_never_op", "i");
 }
 
