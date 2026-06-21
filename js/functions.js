@@ -1,4 +1,4 @@
-var version = "v1.8.0";
+var version = "v1.9.0";
 
 var gist_file_name = "the_finite_scroll";
 if (window.location.host=="myrssalgo.org") {

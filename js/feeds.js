@@ -864,7 +864,7 @@ if (!localStorage.getItem("backstop")) {
 // Keep this outside the first-run backstop block so reloads, imports, and cloud sync
 // cannot leave these values undefined.
 if (localStorage.getItem("regex_never_exclude") === null) {
-    localStorage.setItem("regex_never_exclude", "");
+    localStorage.setItem("regex_never_exclude", "nytimes\\.com");
 }
 if (localStorage.getItem("regex_never_exclude_op") === null) {
     localStorage.setItem("regex_never_exclude_op", "i");
