@@ -17,8 +17,8 @@
 
     <link rel="shortcut icon" type="image/x-icon" href="images/blue-icon-180x180.png">
 
-    <link rel="stylesheet" type="text/css" href="style/main.css?v=v1.8.0">
-	<link rel="stylesheet" type="text/css" href="style/spin.css?v=v1.8.0">
+    <link rel="stylesheet" type="text/css" href="style/main.css?v=v1.9.0">
+	<link rel="stylesheet" type="text/css" href="style/spin.css?v=v1.9.0">
 
 </head>
 <body>
@@ -99,7 +99,7 @@
             </div>
             <h2>Why You Should Use an RSS Reader</h2>
             <p>
-                As Molly White has pointed out, <a href="https://www.citationneeded.news/curate-with-rss/" target="_blank">using an RSS reader</a> lets you "escape newsletter inbox chaos and algorithmic surveillance by building your own enshittification-proof newspaper from the writers you already read." Cory Doctorow agress, citing White, and explaining that <a href="https://doctorow.medium.com/you-should-be-using-an-rss-reader-76aed31151f9" target="_blank">using an RSS reader</a> is "the one thing you can choose to do that will make your internet life better and make the internet better for everyone else, too." <i class="page_title">The Finite Scroll</i> takes this to heart, letting you control not only who you follow but what you see and why. Learn more below.
+                As Molly White has pointed out, <a href="https://www.citationneeded.news/curate-with-rss/" target="_blank">using an RSS reader</a> lets you "escape newsletter inbox chaos and algorithmic surveillance by building your own enshittification-proof newspaper from the writers you already read." Cory Doctorow agrees, citing White, and explaining that <a href="https://doctorow.medium.com/you-should-be-using-an-rss-reader-76aed31151f9" target="_blank">using an RSS reader</a> is "the one thing you can choose to do that will make your internet life better and make the internet better for everyone else, too." <i class="page_title">The Finite Scroll</i> takes this to heart, letting you control not only who you follow but what you see and why. Learn more below.
             </p>
 
             <h2>Settings</h2>
@@ -127,7 +127,7 @@
             <p>
                 We embed preview images and a site's <a href="https://en.wikipedia.org/wiki/Favicon" target="_blank">favicon</a> as part of most article cards. So, unless you have the "Images: Exclude preview images and favicons..." option checked below, simply loading your timeline will download those files, likely producing log files on the servers they came from. And of course, if you follow a link to an article, you'll access that article and set in motion all that comes with that.
             </p>
-            <p>If you make it through all of your articles, and it's Monday, we may embed a <a href="./?crossword=2025-11-17">small crossword puzzle</a> as a reward. This will load content from <a href="https://crosshare.org/" target="_blank">crosshare.org</a>, an open-source ad-free crossword site. You can, however, turn this off below.</p>
+            <p>If you make it through all of your articles we may embed a <a href="./?crossword=2025-11-17">small crossword puzzle</a> as a reward. This will load content from <a href="https://crosshare.org/" target="_blank">crosshare.org</a>, an open-source ad-free crossword site. You can, toggel this on or off below.</p>
             <p>
                 If you check the "Show local weather" option below, your browser will share your location with <a href="https://open-meteo.com/" target="_blank">Open-Meteo</a>'s weather <a href="https://en.wikipedia.org/wiki/API" target="_blank">API</a>. Similarly, if you add an API Key under <i>Magical AI Fairy Dust</i>, when you click 🤖, the headlines and introductory sentences of your feeds may be shared with your LLM provider depending on your prompt. You can, however, use a <a href="https://lmstudio.ai/" target="_blank">local LLM</a> and avoid sharing your prompt with anyone. </p>
             <p>Importantly, if you turn on the <i>Cloud Sync</i> feature, all of your stored data will be shared to a GitHub Gist you control. 
@@ -206,24 +206,23 @@
                 <p>You can use <a href="https://www.codingthelaw.org/Fall_2020/level/5/#intro_vid" target="_blank">regular expressions</a> to be confident you don't miss, or alternatively, never see, certain articles. Your input  below will be fed into JavaScript's <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp" target="_blank">RegExp()</a> as a constructor, where the first input is a string and the second is an optional operator. These are fed to <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match" target="_blank">.match()</a>. If you include a regex under <i>Bump Up</i>, any matches to said expression will have 2 added to their score, which normally maxes out at 1, putting them at the top of your feed. Matches to the regex under <i>Mute</i>, however, will be hidden from your timeline unless they also match <i>Exclude from Mute</i>. The match is performed against an article's: (1) title; (2) description; (3) feed name; and (3) link.  Note: using the <i>search</i> feature overides these settings as it searches ALL articles. Leave string inputs blank to take no action. </p>
                 <p>Cards that have been bumpped up will include a ⇧ in their footer. <i>Refresh page to see results</i>.</p>
                 <h5>Bump Up</h5>
-                <p>Like Barbie and Oppenheimer news? Try: <span class="code_highlight">barbie|oppenheimer</span>, <span  class="code_highlight">i</span>. See <a id="search_always" href="javascript:void('');">bumpped up content</a></p>
+                <p>Like Barbie and Oppenheimer news? Try: <span class="code_highlight">barbie|oppenheimer</span>, <span  class="code_highlight">i</span>. See your <a id="search_always" href="javascript:void('');">bumpped up content</a></p>
                 <p>
                     <input id="regex_always" value="" oninput="localStorage.regex_always=this.value" style="width: calc(100% - 65px);"> 
                 <input id="regex_always_op" value="" oninput="localStorage.regex_always_op=this.value" style="width:50px" value="i"></p>
 
                 <h5>Mute</h5>
-                <p>Dislike Barbie and Oppenheimer news? Try: <span class="code_highlight">barbie|oppenheimer</span>, <span class="code_highlight">i</span>. See <a id="search_never" href="javascript:void('');">muted content</a></p>
+                <p>Dislike Barbie and Oppenheimer news? Try: <span class="code_highlight">barbie|oppenheimer</span>, <span class="code_highlight">i</span>. See your <a id="search_never" href="javascript:void('');">muted content</a></p>
                 <p>
                     <input id="regex_never" value="" oninput="localStorage.regex_never=this.value" style="width: calc(100% - 65px);">
                 <input id="regex_never_op" value="" oninput="localStorage.regex_never_op=this.value" style="width:50px" value="i"></p>
+                <p><b>Note:</b> Mutes override Bumps unless they match <i>Exclude from Mute</i>. To be sure you aren't muting too many bumps, you can view <a id="mute_bump_overlap" href="javascript:void('');">their overlap</a>. You can think of this like a spam folder of sorts, worth checking every once and a while. </p>
 
                 <h5>Exclude from Mute</h5>
-                <p>Want some muted matches to still show? Enter a second regex here. If an article matches both <i>Mute</i> and <i>Exclude from Mute</i>, the mute is ignored. This was designed for users who don't want to see Muted content unless it's from a particular publisher, e.g., <span class="code_highlight">nytimes\.com</span>. See <a id="search_never_exclude" href="javascript:void('');">excluded muted content</a></p>
+                <p>Want some muted matches to still show? Enter a second regex here. If an article matches both <i>Mute</i> and <i>Exclude from Mute</i>, the mute is ignored. This was designed for users who don't want to see Muted content unless it's from a particular publisher, e.g., <span class="code_highlight">nytimes\.com</span>, but that's only one potential use case. See your <a id="search_never_exclude" href="javascript:void('');">muted-excluded content</a></p>
                 <p>
                     <input id="regex_never_exclude" value="" oninput="localStorage.setItem('regex_never_exclude', this.value); dirty();" style="width: calc(100% - 65px);">
-                <input id="regex_never_exclude_op" value="" oninput="localStorage.setItem('regex_never_exclude_op', this.value); dirty();" style="width:50px" value="i"></p>
-                <p>Mutes override Bumps unless they match <i>Exclude from Mute</i>. To be sure you aren't muting too many bumps, you can view <a id="mute_bump_overlap" href="javascript:void('');">their overlap</a>. You can think of this like a spam folder of sorts, worth checking every once and a while. </p>
-            
+                <input id="regex_never_exclude_op" value="" oninput="localStorage.setItem('regex_never_exclude_op', this.value); dirty();" style="width:50px" value="i"></p>            
             </div>
             <div class="row" style="margin-bottom: 10px;">
                 <h4>Flag with a Regular Expressions <a href='./?regex=flag1_is_true' style='text-decoration:none;'>🚩</a><a href='./?regex=has_flag2_is_true' style='text-decoration:none;'>🏁</a></h4>
@@ -351,7 +350,7 @@
                     <h4>Cloud Sync</br><font size=-1>🚨 Experimental Feature 🚨</font></h4>
                     <p>
                         If you want to use <i class="page_title">The Finite Scroll</i> across devices or browsers, you'll need an online copy of your articles, settings, and interactions. If you choose, you can <a href="https://gist.github.com/" target="_blank">create a Gist</a> on GitHub to hold this data (Gists can't be empty. So make a file called <code id="page_json">the_finite_scroll.json</code> with the body <code>{}</code>). <a href="https://github.com/settings/personal-access-tokens" target="_blank">Create a fine-grained access token</a> under <i>Account</i> with permissions only to access Gists. If you provide this token and the Gist's name below, this data will turn on Cloud Sync. This will sync your data with the Gist every time you use the ☁️↺ feature.</p>
-                        <p>ACTIVATING THIS FEATURE MEANS YOUR DATA WILL LEAVE YOUR DEVICE. <i>We will encrypt your data before sending it to your Gist, but this is NO guarantee it will be secure. To do this, we will prompt you to make a password. Do not forget it, as there is no rest.</i></p>
+                        <p>ACTIVATING THIS FEATURE MEANS YOUR DATA WILL LEAVE YOUR DEVICE. <i>We will encrypt your data before sending it to your Gist, but this is NO guarantee it will be secure. To do this, we will prompt you to make a password. Do not forget it, as there is no reset.</i></p>
                         <p> To use your saved Gist on a new device, enter this data there, and <i>Push</i> or <i>Pull</i> as appropriate to avoid overwriting the data you want to keep. After this first sync, clicking ☁️↺ will make sure you're using the most recent version of your data. This feature is experimental. If you're at all worried about overwriting your data, save a backup before entering this data.
                     </p>
                     <p>
@@ -405,7 +404,7 @@
             </div>
             <div class="row" style="margin: 0px;border-top: solid 1px #ccc;padding-top:15px;border-bottom: solid 1px #ccc;">
                 <p>
-                    <sup>&dagger;</sup>If you save your data to a file <b>all of your data (including any passwords or tokens) will be stored in plain text</b> as part of your data file. Think very carfully about this and who might have access to these, and remember your data always lives in your browser's <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank">localstorage</a> as plain text. Cloud Synch encrypts your data before storing it in your Gist, but this is not a guarantee that it is secure.</p>
+                    <sup>&dagger;</sup>If you save your data to a file <b>all of your data (including any passwords or tokens) will be stored in plain text</b> as part of your data file. Think very carefully about this and who might have access to these, and remember your data always lives in your browser's <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank">localstorage</a> as plain text. Cloud Synch encrypts your data before storing it in your Gist, but this is not a guarantee that it is secure.</p>
                 <p>
                     Image credits: <img src="images/externallink.png" style="width:23px;margin-right:5px"/> <a href="https://commons.wikimedia.org/wiki/File:2017-fr.wp-blue-externallinks.svg" target="_blank">2017-fr.wp-blue-externallinks.svg</a> (appears when using <i>Pass URL to Pop-up</i>); <img src="images/placeholder.png" style="width:23px;margin-right:5px"/> <a href="https://commons.wikimedia.org/wiki/File:No-Image-Placeholder.svg" target="_blank">No-Image-Placeholder.svg</a> (appears when using no preview image is found)
                 </p>
@@ -439,12 +438,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js"></script>
 
-<script src="js/spin/spin.min.js?v=v1.8.0"></script>
-<script src="js/report.js?v=v1.8.0"></script>    
+<script src="js/spin/spin.min.js?v=v1.9.0"></script>
+<script src="js/report.js?v=v1.9.0"></script>    
 <script src="js/feeds.js?trained_on=2024-08-13b"></script>
 <script src="js/puzzles.js?trained_on=2024-08-13b"></script>
-<script src="js/logo_cache.js?v=v1.8.0"></script>    
-<script src="js/encryption.js?v=v1.8.0"></script>    
-<script src="js/functions.js?v=v1.8.0"></script>    
+<script src="js/logo_cache.js?v=v1.9.0"></script>    
+<script src="js/encryption.js?v=v1.9.0"></script>    
+<script src="js/functions.js?v=v1.9.0"></script>    
 
 </html>
