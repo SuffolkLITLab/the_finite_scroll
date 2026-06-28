@@ -1,4 +1,4 @@
-var version = "v1.9.0";
+var version = "v1.10.0";
 
 var gist_file_name = "the_finite_scroll";
 if (window.location.host=="myrssalgo.org") {
@@ -2620,6 +2620,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 items = [
                             "Be kind. Have Fun. Try something new.",
                             "Patience is a superpower.",
+                            "All choices are trade offs.",
                             "For any sufficiently long-running unsolved problem, solutions are both more &amp; less complex than you think.",
                             "Evil is what happens when one fails to consider the needs of others.",
                             "Zero-sum thinking may not be the root of all evil, but all evil is rooted in zero-sum thinking.",
